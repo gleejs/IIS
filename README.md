@@ -14,5 +14,17 @@ Web Manamgent Tools
 
 dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-WebServer
 
-dism /online /enable-feature /featurename:IIS-IIS6ManagentCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
+dism /online /enable-feature /featurename:IIS-WebServerMangementTools /featurename:IIS-IIS6ManagentCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
+
+dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS_LegacySnapIn
+
+dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
+
+dism /online /enable-feature /featurename:IIS-ISAPIExtensions /featurename:/IIS-ASP
+
+dism /online /enable-feature /featurename:IIS-NetFxExtensibility /featurename:IIS-ISAPIFilter /featurename:IIS-ASPNET
+
+dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
+
+dism /online /enable-feature /featurename:IIS-WindowsAuthentication
 
