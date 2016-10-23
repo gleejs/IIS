@@ -28,3 +28,6 @@ dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideInc
 
 dism /online /enable-feature /featurename:IIS-WindowsAuthentication
 
+*Enable 32 Bit Application on Default Application Pool
+
+Set-ItemProperty IIS:\AppPools\DefaultAppPool enable32BitAppOnWin64 true
