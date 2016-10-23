@@ -16,11 +16,11 @@ dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-Web
 
 dism /online /enable-feature /featurename:IIS-WebServerManagementTools /featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
 
-dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS_LegacySnapIn
+dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
 
 dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
 
-dism /online /enable-feature /featurename:IIS-ISAPIExtensions /featurename:/IIS-ASP
+dism /online /enable-feature /featurename:IIS-ISAPIExtensions /featurename:IIS-ASP
 
 dism /online /enable-feature /featurename:IIS-NetFxExtensibility /featurename:IIS-ISAPIFilter /featurename:IIS-ASPNET
 
