@@ -31,3 +31,6 @@ dism /online /enable-feature /featurename:IIS-WindowsAuthentication
 *Enable 32 Bit Application on Default Application Pool
 
 Set-ItemProperty IIS:\AppPools\DefaultAppPool enable32BitAppOnWin64 true
+
+
+https://github.com/jefflomax/configure-iis-webapps-powershell/blob/master/configureIISWebApplications.ps1
