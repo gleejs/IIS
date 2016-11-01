@@ -17,7 +17,7 @@ Switch -Regex ($os.version)
             $osVer="Server2016"
             }
          else
-           {Write-Host "Server"}
+           {Write-Host "Unknown"}
 
          
      }
@@ -34,11 +34,24 @@ $os.ProductType
             $osVer="Server2012"
             }
          else
-           {Write-Host "Server"}
+           {Write-Host "Unknown"}
 
          
     
 }
+
+"6.1"
+{
+$os.ProductType
+
+        if($os.producttype -eq 1)
+           {Write-Host "Windows 7 SP1"
+           $osVer="Windows7"
+           }
+
+}
+
+
 DEFAULT {"Version not listed"}
 }
 
@@ -70,7 +83,7 @@ Switch ($osVer)
 
       dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-WebServer
       dism /online /enable-feature /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
-      dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapin
+      dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
       
       dism /online /enable-feature /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
       dism /online /enable-feature /featurename:IIS-ISAPIFilter /featurename:IIS-NetFxExtensibility /featurename:NetFx4Extended-ASPNET45 /featurename:IIS-ASPNET 
@@ -131,6 +144,47 @@ $osVer
 
 }
 
+"Windows7"
+{
+$osVer
+#Windows 7.1
+                  $dnfDir='hklm:\SOFTWARE\Microsoft\NET Framework Setup\NDP'
+                  $v4Dir="$dnfDir\v4\Full"
+                  if (Get-ItemProperty -Path $v4Dir -ErrorAction Silentlycontinue)
+                  {
+                       $version=(Get-ItemProperty -Path $v4Dir -ErrorAction Silentlycontinue).release
+                       $version
+                       if ($version -lt '379893')
+                       {
+                            Write-Host "DotNETFramework 4.5 Not Installed"
+                            $dotProg = "\\Win2012R2Dep2\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
+                            $dotArgs = " /q /norestart"
+                            start-process $dotProg  "$dotArgs" -Wait
+                       }
+                  }
+                  else{Write-Host "DOT NET 4 Not Installed"
+
+                            #Write-Host "DotNETFramework 4.5 Not Installed"
+                            $dotProg = "\\Win2012R2Dep2\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
+                            $dotArgs = " /q /norestart"
+                            start-process $dotProg  "$dotArgs" -Wait
+
+
+                  }
+        dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-WebServer
+        dism /online /enable-feature /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
+        dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
+      
+
+        dism /online /enable-feature /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
+        dism /online /enable-feature /featurename:IIS-ISAPIFilter /featurename:IIS-NetFxExtensibility /featurename:IIS-ASPNET 
+
+        dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
+      dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
+     
+      dism /online /enable-feature /featurename:IIS-WindowsAuthentication
+}
+
 Default
 {
   Write-Host "Not Covered"
@@ -145,9 +199,8 @@ if((get-wmiobject -Class Win32_Processor).addresswidth -eq "64")
    }
 
 
-
+import-module webadministration
 get-childitem IIS:\Sites | Select -expand Name | % { set-WebconfigurationProperty -PSPath MACHINE/WEBROOT/APPHOST -Location $_ -Filter system.webserver/asp -Name enableParentPaths -Value $true}
-
 #checking for 32 bit or 64 bit os
 $GLBINSTDIR=(${env:ProgramFiles(x86)},${env:ProgramFiles} -ne $null)[0]
 $GLBINSTDIR=$GLBINSTDIR+"\Company\Product\"
