@@ -147,3 +147,12 @@ if((get-wmiobject -Class Win32_Processor).addresswidth -eq "64")
 
 
 get-childitem IIS:\Sites | Select -expand Name | % { set-WebconfigurationProperty -PSPath MACHINE/WEBROOT/APPHOST -Location $_ -Filter system.webserver/asp -Name enableParentPaths -Value $true}
+
+#checking for 32 bit or 64 bit os
+$GLBINSTDIR=(${env:ProgramFiles(x86)},${env:ProgramFiles} -ne $null)[0]
+$GLBINSTDIR=$GLBINSTDIR+"\Company\Product\"
+$GLBINSTDIR
+$Program="\\CDSERVER\Share\Setup_AE.exe"
+$arguments=' /S:2 /I:'+'"'+ $GLBINSTDIR+'"'
+start-process "$Program" "$arguments" -Wait 
+write-host 'Completed'
