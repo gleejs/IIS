@@ -34,3 +34,5 @@ Set-ItemProperty IIS:\AppPools\DefaultAppPool enable32BitAppOnWin64 true
 
 
 https://github.com/jefflomax/configure-iis-webapps-powershell/blob/master/configureIISWebApplications.ps1
+
+https://www.stigviewer.com/stig/microsoft_ie_version_6/2014-01-07/finding/V-6237
