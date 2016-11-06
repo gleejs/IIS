@@ -1,4 +1,4 @@
-set-executionpolicy remotesigned
+#set-executionpolicy remotesigned
 
 
 Function checkOSVersion {
@@ -105,12 +105,23 @@ Switch ($osVer)
     Install-WindowsFeature Web-Net-Ext45
     Install-WindowsFeature Web-ASP
     Install-WindowsFeature Web-Asp-Net45
+    Install-WindowsFeature Web-AppInit
+    Install-WindowsFeature Web-CGI
     
+
+    Install-WindowsFeature Web-Mgmt-Console
+    Install-WindowsFeature Web-Mgmt-Compat
+    Install-WindowsFeature Web-Metabase
+    Install-WindowsFeature Web-Lgcy-Mgmt-Console
+    Install-WindowsFeature Web-Lgcy-Scripting
+    Install-WindowsFeature Web-WMI
     Install-WindowsFeature Web-Includes
     Install-Windowsfeature Web-Scripting-Tools
     Install-Windowsfeature Web-Mgmt-Service
 
     Install-WindowsFeature Web-Windows-Auth
+    $RegKey='HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings'
+    Set-ItemProperty -Path $RegKey -Name DisableCachingOfSSLPages -Value 0
   
 
 
@@ -142,6 +153,30 @@ $osVer
 
     Install-WindowsFeature Web-Windows-Auth
 
+    $RegKey='HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings'
+    Set-ItemProperty -Path $RegKey -Name DisableCachingOfSSLPages -Value 0
+
+}
+
+"Windows81"
+{
+    Write-Host "Install IIS for Windows 8.1"
+    dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-WebServer
+    dism /online /enable-feature /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
+    dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
+      
+
+    dism /online /enable-feature /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
+    dism /online /enable-feature /featurename:IIS-ApplicationInit  
+    dism /online /enable-feature /featurename:NetFX4Extended-ASPNET45 /featurename:IIS-NetFxExtensibility /Featurename:IIS-NetFxExtensibility45
+
+    dism /online /enable-feature /featurename:IIS-ISAPIFilter   
+    dism /online /enable-feature /featurename:IIS-ASPNET /FeatureName:IIS-ASPNET45
+
+    dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
+    dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
+     
+    dism /online /enable-feature /featurename:IIS-WindowsAuthentication
 }
 
 "Windows7"
@@ -201,11 +236,12 @@ if((get-wmiobject -Class Win32_Processor).addresswidth -eq "64")
 
 import-module webadministration
 get-childitem IIS:\Sites | Select -expand Name | % { set-WebconfigurationProperty -PSPath MACHINE/WEBROOT/APPHOST -Location $_ -Filter system.webserver/asp -Name enableParentPaths -Value $true}
+
 #checking for 32 bit or 64 bit os
 $GLBINSTDIR=(${env:ProgramFiles(x86)},${env:ProgramFiles} -ne $null)[0]
-$GLBINSTDIR=$GLBINSTDIR+"\Company\Product\"
+$GLBINSTDIR=$GLBINSTDIR+"\Exact Software\SYNERGY.NET\"
 $GLBINSTDIR
-$Program="\\CDSERVER\Share\Setup_AE.exe"
+$Program="\\win2012r2dep2\deploymentshare$\Applications\synergy.NET_258(DEV)_CDSet\Setup_AE.exe"
 $arguments=' /S:2 /I:'+'"'+ $GLBINSTDIR+'"'
 start-process "$Program" "$arguments" -Wait 
 write-host 'Completed'
