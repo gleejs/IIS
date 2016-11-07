@@ -1,4 +1,5 @@
 #set-executionpolicy remotesigned
+$srvName="ServerName"
 
 
 Function checkOSVersion {
@@ -192,7 +193,7 @@ $osVer
                        if ($version -lt '379893')
                        {
                             Write-Host "DotNETFramework 4.5 Not Installed"
-                            $dotProg = "\\Win2012R2Dep2\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
+                            $dotProg = "\\$srvName\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
                             $dotArgs = " /q /norestart"
                             start-process $dotProg  "$dotArgs" -Wait
                        }
@@ -200,7 +201,7 @@ $osVer
                   else{Write-Host "DOT NET 4 Not Installed"
 
                             #Write-Host "DotNETFramework 4.5 Not Installed"
-                            $dotProg = "\\Win2012R2Dep2\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
+                            $dotProg = "\\$SrvName\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
                             $dotArgs = " /q /norestart"
                             start-process $dotProg  "$dotArgs" -Wait
 
@@ -239,9 +240,9 @@ get-childitem IIS:\Sites | Select -expand Name | % { set-WebconfigurationPropert
 
 #checking for 32 bit or 64 bit os
 $GLBINSTDIR=(${env:ProgramFiles(x86)},${env:ProgramFiles} -ne $null)[0]
-$GLBINSTDIR=$GLBINSTDIR+"\Exact Software\SYNERGY.NET\"
+$GLBINSTDIR=$GLBINSTDIR+"\Company\Product\"
 $GLBINSTDIR
-$Program="\\win2012r2dep2\deploymentshare$\Applications\synergy.NET_258(DEV)_CDSet\Setup_AE.exe"
+$Program="\\$srvName\deploymentshare$\Applications\CDSET\Setup_AE.exe"
 $arguments=' /S:2 /I:'+'"'+ $GLBINSTDIR+'"'
 start-process "$Program" "$arguments" -Wait 
 write-host 'Completed'
