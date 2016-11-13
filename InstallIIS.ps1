@@ -162,22 +162,25 @@ $osVer
 "Windows81"
 {
     Write-Host "Install IIS for Windows 8.1"
-    dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-WebServer
-    dism /online /enable-feature /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
-    dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-WebServerRole /featurename:IIS-WebServer
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
       
 
-    dism /online /enable-feature /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
-    dism /online /enable-feature /featurename:IIS-ApplicationInit  
-    dism /online /enable-feature /featurename:NetFX4Extended-ASPNET45 /featurename:IIS-NetFxExtensibility /Featurename:IIS-NetFxExtensibility45
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-ApplicationInit  
+    dism /online /enable-feature /Quiet /norestart /featurename:NetFX4Extended-ASPNET45 /featurename:IIS-NetFxExtensibility /Featurename:IIS-NetFxExtensibility45
 
-    dism /online /enable-feature /featurename:IIS-ISAPIFilter   
-    dism /online /enable-feature /featurename:IIS-ASPNET /FeatureName:IIS-ASPNET45
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-ISAPIFilter   
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-ASPNET /FeatureName:IIS-ASPNET45
 
-    dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
-    dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
      
-    dism /online /enable-feature /featurename:IIS-WindowsAuthentication
+    dism /online /enable-feature /Quiet /norestart /featurename:IIS-WindowsAuthentication
+    #restart-computer
+    #cscript.exe "\\Win2012R2Dep2\Deploymentshare$\Scripts\LTISuspend.wsf"
+    new-item c:\InstallESE.txt -type file
 }
 
 "Windows7"
