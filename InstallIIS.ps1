@@ -82,17 +82,17 @@ Switch ($osVer)
               Enable-WindowsOptionalFeature -Online -FeatureName "NetFx4-AdvSrvs"
         }
 
-      dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-WebServer
-      dism /online /enable-feature /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
-      dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-WebServerRole /featurename:IIS-WebServer
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
       
-      dism /online /enable-feature /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
-      dism /online /enable-feature /featurename:IIS-ISAPIFilter /featurename:IIS-NetFxExtensibility /featurename:NetFx4Extended-ASPNET45 /featurename:IIS-ASPNET 
-      dism /online /enable-feature /featurename:IIS-NetFxExtensibility45 /featurename:IIS-ASPNET45 
-      dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
-      dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
-      dism /online /enable-feature /featurename:IIS-WebSockets /featurename:IIS-ApplicationInit
-      dism /online /enable-feature /featurename:IIS-WindowsAuthentication
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-ISAPIFilter /featurename:IIS-NetFxExtensibility /Quiet /norestart /featurename:NetFx4Extended-ASPNET45 /featurename:IIS-ASPNET 
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-NetFxExtensibility45 /featurename:IIS-ASPNET45 
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-ManagementScriptingTools /Quiet /norestart /featurename:IIS-ManagementService
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-WebSockets /featurename:IIS-ApplicationInit
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-WindowsAuthentication
      
    }
 
