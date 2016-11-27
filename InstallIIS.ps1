@@ -61,7 +61,7 @@ return $osVer
 $osVer=""
 $osVer=checkOSVersion
 $osVer
-$srvName=“ServerName”
+$srvName="Win2012R2Dep2"
 Switch ($osVer)
 {
 
@@ -87,9 +87,9 @@ Switch ($osVer)
       dism /online /enable-feature /Quiet /norestart /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
       
       dism /online /enable-feature /Quiet /norestart /featurename:IIS-ISAPIExtensions /FeatureName:IIS-ASP
-      dism /online /enable-feature /Quiet /norestart /featurename:IIS-ISAPIFilter /featurename:IIS-NetFxExtensibility /Quiet /norestart /featurename:NetFx4Extended-ASPNET45 /featurename:IIS-ASPNET 
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-ISAPIFilter /featurename:IIS-NetFxExtensibility /featurename:NetFx4Extended-ASPNET45 /featurename:IIS-ASPNET 
       dism /online /enable-feature /Quiet /norestart /featurename:IIS-NetFxExtensibility45 /featurename:IIS-ASPNET45 
-      dism /online /enable-feature /Quiet /norestart /featurename:IIS-ManagementScriptingTools /Quiet /norestart /featurename:IIS-ManagementService
+      dism /online /enable-feature /Quiet /norestart /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
       dism /online /enable-feature /Quiet /norestart /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
       dism /online /enable-feature /Quiet /norestart /featurename:IIS-WebSockets /featurename:IIS-ApplicationInit
       dism /online /enable-feature /Quiet /norestart /featurename:IIS-WindowsAuthentication
@@ -187,29 +187,6 @@ $osVer
 {
 $osVer
 #Windows 7.1
-                  $dnfDir='hklm:\SOFTWARE\Microsoft\NET Framework Setup\NDP'
-                  $v4Dir="$dnfDir\v4\Full"
-                  if (Get-ItemProperty -Path $v4Dir -ErrorAction Silentlycontinue)
-                  {
-                       $version=(Get-ItemProperty -Path $v4Dir -ErrorAction Silentlycontinue).release
-                       $version
-                       if ($version -lt '379893')
-                       {
-                            Write-Host "DotNETFramework 4.5 Not Installed"
-                            $dotProg = "\\Win2012R2Dep2\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
-                            $dotArgs = " /q /norestart"
-                            start-process $dotProg  "$dotArgs" -Wait
-                       }
-                  }
-                  else{Write-Host "DOT NET 4 Not Installed"
-
-                            #Write-Host "DotNETFramework 4.5 Not Installed"
-                            $dotProg = "\\Win2012R2Dep2\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
-                            $dotArgs = " /q /norestart"
-                            start-process $dotProg  "$dotArgs" -Wait
-
-
-                  }
         dism /online /enable-feature /featurename:IIS-WebServerRole /featurename:IIS-WebServer
         dism /online /enable-feature /featurename:IIS-WebServerManagementTools /Featurename:IIS-IIS6ManagementCompatibility /featurename:IIS-WMICompatibility /featurename:IIS-Metabase
         dism /online /enable-feature /featurename:IIS-LegacyScripts /featurename:IIS-LegacySnapIn
@@ -219,9 +196,40 @@ $osVer
         dism /online /enable-feature /featurename:IIS-ISAPIFilter /featurename:IIS-NetFxExtensibility /featurename:IIS-ASPNET 
 
         dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /featurename:IIS-ManagementService
-      dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
+        dism /online /enable-feature /featurename:IIS-CGI /featurename:IIS-ServerSideIncludes
      
       dism /online /enable-feature /featurename:IIS-WindowsAuthentication
+      new-item c:\InstallESE.txt -type file
+
+                  $dnfDir='hklm:\SOFTWARE\Microsoft\NET Framework Setup\NDP'
+                  $v4Dir="$dnfDir\v4\Full"
+                  if (Get-ItemProperty -Path $v4Dir -ErrorAction Silentlycontinue)
+                  {
+                       $version=(Get-ItemProperty -Path $v4Dir -ErrorAction Silentlycontinue).release
+                       $version
+                       if ($version -lt '379893')
+                       {
+                            Write-Host "DotNETFramework 4.5 Not Installed"
+                            $dotProg = "\\$srvName\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
+                            $dotArgs = " /q /norestart"
+                            start-process $dotProg  "$dotArgs" -Wait
+                       }
+                  }
+                  else{Write-Host "DOT NET 4 Not Installed"
+                            <#
+                            $dotProg = "\\$srvName\deploymentshare$\Applications\DOTNETFRAMEWORK\dotNetFx40_Full_x86_x64.exe"
+                            $dotArgs = " /q /norestart"
+                            start-process $dotProg "$dotArgs" -Wait
+                            #>
+                            #Write-Host "DotNETFramework 4.5 Not Installed"
+                            $dotProg = "\\$srvName\deploymentshare$\Applications\DOTNETFRAMEWORK\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"
+                            $dotArgs = " /q /norestart"
+                            start-process $dotProg  "$dotArgs" -Wait
+
+
+                  }
+                 set-itemproperty "IIS:\AppPools\DefaultAppPool" managedRuntimeVersion v4.0
+        
 }
 
 Default
