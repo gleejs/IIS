@@ -61,7 +61,7 @@ return $osVer
 $osVer=""
 $osVer=checkOSVersion
 $osVer
-$srvName="Win2012R2Dep2"
+$srvName=“Servername”
 Switch ($osVer)
 {
 
