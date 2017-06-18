@@ -42,6 +42,12 @@ Switch -Regex ($osVer)
       dism /online /enable-feature /Quiet /norestart /featurename:IIS-WindowsAuthentication
 
 
+      import-module webadministration
+      get-childitem IIS:\Sites | Select -expand Name | % { set-WebconfigurationProperty -PSPath MACHINE/WEBROOT/APPHOST -Location $_ -Filter system.webserver/asp -Name enableParentPaths -Value $true}
+
+
+
+
     }
      
     "Windows7"
@@ -110,10 +116,6 @@ if((get-wmiobject -Class Win32_Processor).addresswidth -eq "64")
     import-module webadministration
     Set-ItemProperty "IIS:\appPools\DefaultAppPool" -name enable32BitAppOnWin64 -Value "TRUE"
    }
-
-
-import-module webadministration
-get-childitem IIS:\Sites | Select -expand Name | % { set-WebconfigurationProperty -PSPath MACHINE/WEBROOT/APPHOST -Location $_ -Filter system.webserver/asp -Name enableParentPaths -Value $true}
 
 
 Write-Host "Completed IIS Installation"
