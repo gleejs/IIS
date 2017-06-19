@@ -1,6 +1,6 @@
 #Set-ExecutionPolicy -Scope CurrentUser
 #Set-ExecutionPolicy Bypass
-$srvName="Win2012R2Dep2"
+$srvName="ServerName"
 Import-Module \\$srvName\Deploymentshare$\Applications\LIB\getOSVer.psm1
 
 $osVer=getOSVer
